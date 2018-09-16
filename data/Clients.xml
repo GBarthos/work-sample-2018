@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Clients>
+	<Client Name="Arthur" Origin="Montreal" Destination="Paris" Preference="Time" Type="OneWay" />
+	<Client Name="Baptiste" Origin="Montreal" Destination="London" Preference="Time" Type="RoundTrip" />
+	<Client Name="Camille" Origin="Toronto" Destination="Paris" Preference="Cost" Type="RoundTrip" />
+	<Client Name="Denis" Origin="Toronto" Destination="London" Preference="Time" Type="OneWay" />
+	<Client Name="Eric" Origin="Montreal" Destination="Paris" Preference="Cost" Type="RoundTrip" />
+</Clients>

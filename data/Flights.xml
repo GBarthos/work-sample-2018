@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Flights>
+	<Flight Company="Air France" Number="340" Origin="Montreal" Departure="11:45Z" Destination="Paris" Arrival="17:30Z" Cost="785" />
+	<Flight Company="Air Canada" Number="335" Origin="Montreal" Departure="00:45Z" Destination="Paris" Arrival="06:15Z" Cost="800" />
+	<Flight Company="Air Canada" Number="748" Origin="Montreal" Departure="23:00Z" Destination="Toronto" Arrival="23:55Z" Cost="140" />	
+	<Flight Company="Air Canada" Number="645" Origin="Toronto" Departure="00:00Z" Destination="Paris" Arrival="05:40Z" Cost="780" />
+	<Flight Company="Air Canada" Number="521" Origin="Toronto" Departure="22:15Z" Destination="London" Arrival="03:35Z" Cost="850" />
+	<Flight Company="British Airways" Number="872" Origin="Toronto" Departure="01:05Z" Destination="London" Arrival="06:50Z" Cost="440" />
+	<Flight Company="Air Canada" Number="874" Origin="Toronto" Departure="14:10Z" Destination="Montreal" Arrival="15:05Z" Cost="195" />		
+	<Flight Company="British Airways" Number="995" Origin="London" Departure="12:00Z" Destination="Montreal" Arrival="18:30Z" Cost="1230" />
+	<Flight Company="Air Canada" Number="827" Origin="London" Departure="07:00Z" Destination="Toronto" Arrival="13:30Z" Cost="580" />	
+	<Flight Company="Air Canada" Number="641" Origin="Paris" Departure="05:45Z" Destination="Montreal" Arrival="10:30Z" Cost="880" />
+	<Flight Company="Air France" Number="166" Origin="Paris" Departure="05:20Z" Destination="London" Arrival="06:05Z" Cost="85" />
+	<Flight Company="Air France" Number="274" Origin="Paris" Departure="05:45Z" Destination="Toronto" Arrival="12:10Z" Cost="670" />
+</Flights>
