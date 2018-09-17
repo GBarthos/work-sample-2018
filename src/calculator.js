@@ -20,7 +20,8 @@ function printTrip(client, trip) {
         `\n  |> Total duration: ${humanReadableDuration(trip.totalTime)} {flight: ${humanReadableDuration(trip.totalFlightDuration)}, wait: ${humanReadableDuration(trip.totalWait) || '0'}}` +
         `\n  |> Total Price: ${trip.totalPrice} {sum: ${trip.sum}, discounts: ${trip.numberOfStopDiscounts}}`+
         `\n  |- ${trip.flights.map((flight) => {
-            return (`Departure ${flight.departure} (${flight.origin}) / Arrival ${flight.arrival} (${flight.destination})`);
+            const company = flight.company.split(' ').map((text) => text[0]).join('');
+            return (`${company}${flight.number} ${flight.departure} (${flight.origin}) / ${flight.arrival} (${flight.destination})`);
         }).join('\n  |- ')}
     `);
 }
