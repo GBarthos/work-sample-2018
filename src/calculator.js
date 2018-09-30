@@ -4,51 +4,52 @@ const airports = require('./data/airports.js');
 const clients = require('./data/clients.js');
 const flights = require('./data/flights.js');
 const graph = require('./data/graph.js');
+const ClientModel = require('./models/ClientModel.js');
+const FlightModel = require('./models/FlightModel.js');
 const TravelModel = require('./models/TravelModel.js');
+
 const { logger } = require('./tools/utils.js');
-const { humanReadableDuration } = require('./tools/time.js');
-
 const { findAllPaths } = require('./graph.js');
-const { computeTravelPrice, computeTravelDuration } = require('./compute-graph.js');
-
 
 /**
- * Print the data of a client and its travel.
+ * Produce a collection of ClientModel.
  *
- * @param {Object} client an object representing a client
- * @param {Object} travel an object representing a path for a client
+ * @param {Object[]|Object} items an item or collection of item representing a client object.
+ * @returns {ClientModel[]} a collection of ClientModel instances.
  */
-function printTravel(travel, index) {
-    const duration = humanReadableDuration(travel.duration.totalTime);
-    const flightTime = humanReadableDuration(travel.duration.flightTime);
-    const waitTime = humanReadableDuration(travel.duration.waitTime) || 0;
-    const price = travel.price.totalPrice;
-    const cumulativePrice = travel.price.cumulativePrice;
-    const numberOfStopDiscounts = travel.price.numberOfStopDiscounts;
+function makeClients(items) {
+    if (Array.isArray(items)) {
+        return items.map((item) => (item instanceof ClientModel ? item : new ClientModel(item)));
+    } else if (typeof items === 'object') {
+        return items instanceof ClientModel ? [items] : [new ClientModel(items)];
+    } else {
+        throw new TypeError('"makeClients" takes a collection of client items');
+    }
+}
 
-    const details = [
-        `>> Duration: ${duration} {flight: ${flightTime}, wait: ${waitTime}}`,
-        `>> Price: ${price} {sum: ${cumulativePrice}, discounts: ${numberOfStopDiscounts}}`
-    ];
-
-    const flights = travel.flights.map((flight) => {
-        const company = flight.company.split(' ').map((text) => text[0]).join('');
-        const flightNumber = `${company}${flight.number}`;
-
-        return `- ${flightNumber} ${flight.departure} (${flight.origin}) / ${flight.arrival} (${flight.destination})`;
-    });
-
-    const blocks = [].concat(details).concat(flights).map((value) => `  ${value}`);
-    return [`[Travel ${index + 1}]`].concat(blocks);
+/**
+ * Produce a collection of FlightModel.
+ *
+ * @param {Object[]|Object} items an item or collection of item representing a flight object.
+ * @returns {FlightModel[]} a collection of FlightModel instances.
+ */
+function makeFlights(items) {
+    if (Array.isArray(items)) {
+        return items.map((item) => (item instanceof FlightModel ? item : new FlightModel(item)));
+    } else if (typeof items === 'object') {
+        return items instanceof FlightModel ? [items] : [new FlightModel(items)];
+    } else {
+        throw new TypeError('"makeFlights" takes a collection of flight items');
+    }
 }
 
 function printTicket(client, travels) {
-    const clientBlock = `${client.name} [${client.origin} => ${client.destination}] (${client.preference}) <${client.type}>`;
+    const clientBlock = client.print();
     const travelsBlock = travels
-        .map((travel, index) => printTravel(travel, index))
+        .map((travel) => travel.print().split('\n'))
         .reduce((acc, travel) => acc.concat(travel), []);
 
-    return [clientBlock].concat(travelsBlock);
+    return [clientBlock].concat(travelsBlock).join('\n  |');
 }
 
 /**
@@ -65,13 +66,9 @@ function getMostAdequateTravel(client) {
     }
 
     const paths = findAllPaths(graph, client.origin, client.origin, client.destination, path = []);
-    const data = paths.map((edges) => {
-        const travel = new TravelModel(client.origin, client.destination, edges);
-        travel.setDuration(computeTravelDuration(edges));
-        travel.setPrice(computeTravelPrice(edges));
-
-        return travel;
-    });
+    const data = paths.map((edges) => (
+        new TravelModel(client.origin, client.destination, edges)
+    ));
 
     const cheapest = data.reduce((accumulator, travel) => (
         !accumulator || (accumulator.price.compare(travel.price) > 0) ?
@@ -83,25 +80,30 @@ function getMostAdequateTravel(client) {
         travel: accumulator
     ), null);
 
-    if (client.preference === "Time") {
+    if (client.preference === ClientModel.Preferences.TIME) {
         return fastest;
-    } else if (client.preference === "Cost") {
+    } else if (client.preference === ClientModel.Preferences.COST) {
         return cheapest;
     } else {
         return null;
     }
 }
 
-// TODO: #imrpove -
-// actully make all this process independent of the folder ./data .
-// automatate it and provide a single entry-point function.
-// make so that when this file is called as main script, execute
-// the process on the specific data in folder ./data
+function calculator(clients, flights) {
+    const clientList = makeClients(clients);
+    const flightList = makeFlights(flights);
+
+    clientList.forEach((client) => {
+        const travel = getMostAdequateTravel(client);
+        const text = printTicket(client, [travel]);
+        logger.log(text);
+    });
+}
+
+// EXPORTS
+module.exports = calculator;
 
 //  MAIN EXECUTION STARTS HERE ! ////
-[clients[0]].map((client) => {
-    const travel = getMostAdequateTravel(client);
-    // TODO: #improve - actually log instead of returning a string
-    const text = printTicket(client, [travel]);
-    logger.log(text.join('\n  |'));
-});
+if (typeof module != 'undefined' && require.main === module) {
+    calculator(clients[0], flights);
+}

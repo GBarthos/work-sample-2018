@@ -1,8 +1,7 @@
-
 /**
  * Convert time string into a number of minutes.
  *
- * @param {String} str a string representing time of the day
+ * @param {String} str - a string representing time of the day
  * @returns number of minutes represented by the time string
  */
 function timeToMinutes(str) {
@@ -25,8 +24,8 @@ function timeToMinutes(str) {
 /**
  * Given the amout of minutes between the two given time string.
  *
- * @param {String} time1 a string representing time of the day
- * @param {String} time2 a string representing time of the day
+ * @param {String} time1 - a string representing time of the day
+ * @param {String} time2 - a string representing time of the day
  * @returns number of minutes between time1 and time2
  */
 function timeToDuration(time1, time2) {
@@ -53,8 +52,8 @@ function timeToDuration(time1, time2) {
  * Add an amount of minutes to a time string,
  * then reconvert it to a time string.
  *
- * @param {String} str a string representing time of the day
- * @param {Number} nbr an amount of minutes to add
+ * @param {String} str - a string representing time of the day
+ * @param {Number} nbr - an amount of minutes to add
  * @returns a time string
  */
 function addMinutesToTime(str, nbr) {
@@ -72,7 +71,7 @@ function addMinutesToTime(str, nbr) {
 /**
  * Add a leading zero to a string representing a number.
  *
- * @param {Number} nbr a finite number
+ * @param {Number} nbr - a finite number
  * @returns a string representing a number
  */
 function addLeadingZero(nbr) {
@@ -86,7 +85,7 @@ function addLeadingZero(nbr) {
 /**
  * Convert an amount of minutes into a time string.
  *
- * @param {Number} nbr an amount of minutes
+ * @param {Number} nbr - an amount of minutes
  * @returns a string representing time of the day
  */
 function minutesToTime(nbr) {
@@ -106,7 +105,7 @@ function minutesToTime(nbr) {
  * representing a time, to the current amount representing
  * midnight.
  *
- * @param {Number} nbr an amount of minutes
+ * @param {Number} nbr - an amount of minutes
  * @returns an amount of minutes
  */
 function minutesToMidnight(nbr) {
@@ -120,7 +119,7 @@ function minutesToMidnight(nbr) {
 /**
  * Pretty print a duration into a human-readdable string.
  *
- * @param {Number} duration an amount of minutes representing a duration
+ * @param {Number} duration - an amount of minutes representing a duration
  * @returns a string representing a duration
  */
 function humanReadableDuration(duration) {
