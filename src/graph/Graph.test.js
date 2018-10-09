@@ -9,10 +9,14 @@ const {
 const Graph = require('./Graph.js');
 const { Node, Edge } = Graph;
 
-tap.test('graph/Graph.js', async() => {
+tap.test('src/graph/Graph.js', async() => {
     const noop = () => {};
-    const nonStringValues = [123, NaN, null, [], {}, noop, /regex/, new Date()];
-    const nonFunctionValues = [123, NaN, null, [], {}, '', 'asdf', /regex/, new Date()];
+    const date = new Date();
+    const map = new Map();
+    const regex = /regex/;
+
+    const nonStringValues = [true, false, 0, 123, NaN, undefined, null, [], [1], {}, {a:1}, noop, regex, date, map];
+    const nonFunctionValues = [true, false, 0, 123, NaN, undefined, null, [], [1], {}, {a:1}, '', 'asdf', regex, date, map];
 
     tap.test('Node', async() => {
         tap.test('constructor', async() => {

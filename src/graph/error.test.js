@@ -8,8 +8,13 @@ const {
     makeKeyUnknownError
 } = require('./errors.js');
 
-tap.test('graph/error.js', async() => {
-    const nonStringValues = [123, NaN, null, [], {}, ()=>{}, /regex/, new Date()];
+tap.test('src/graph/error.js', async() => {
+    const noop = () => {};
+    const date = new Date();
+    const map = new Map();
+    const regex = /regex/;
+
+    const nonStringValues = [true, false, 0, 123, NaN, undefined, null, [], [1], {}, {a:1}, noop, regex, date, map];
 
     tap.test('GraphError', async() => {
         tap.test('should identify as the correct type', async() => {

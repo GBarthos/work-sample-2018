@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/calculator.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx tap src/*/*.test.js"
   },
   "author": "",
   "license": "ISC",
