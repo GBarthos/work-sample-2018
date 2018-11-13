@@ -52,15 +52,15 @@ tap.test('src/graph/Graph.js', async() => {
                 const edge = new Edge();
                 tap.match(edge.key, undefined);
                 tap.match(edge.attributes, {});
-                tap.match(edge.from, undefined);
-                tap.match(edge.to, undefined);
+                tap.match(edge.from, null);
+                tap.match(edge.to, null);
             });
 
             tap.test('initialize with "key" parameter', async() => {
                 const edge = new Edge('key');
                 tap.match(edge.key, 'key');
-                tap.match(edge.from, undefined);
-                tap.match(edge.to, undefined);
+                tap.match(edge.from, null);
+                tap.match(edge.to, null);
                 tap.match(edge.attributes, {});
             });
 
@@ -68,7 +68,7 @@ tap.test('src/graph/Graph.js', async() => {
                 const edge = new Edge(undefined, 'from');
                 tap.match(edge.key, undefined);
                 tap.match(edge.from, 'from');
-                tap.match(edge.to, undefined);
+                tap.match(edge.to, null);
                 tap.match(edge.attributes, {});
             });
 
@@ -83,8 +83,8 @@ tap.test('src/graph/Graph.js', async() => {
             tap.test('initialize with "attributes" parameter', async() => {
                 const edge = new Edge(undefined, undefined, undefined, { a: 1 });
                 tap.match(edge.key, undefined);
-                tap.match(edge.from, undefined);
-                tap.match(edge.to, undefined);
+                tap.match(edge.from, null);
+                tap.match(edge.to, null);
                 tap.match(edge.attributes, { a: 1 });
             });
         });
@@ -93,8 +93,43 @@ tap.test('src/graph/Graph.js', async() => {
     tap.test('Graph', async() => {
         tap.test('constructor', async() => {
             const graph = new Graph();
-            tap.match(graph.nodes, new Map());
-            tap.match(graph.edges, new Map());
+            tap.match(graph._nodes, new Map());
+            tap.match(graph._edges, new Map());
+        });
+
+        tap.test('order', async() => {
+            const graph = new Graph();
+            tap.equal(graph.order, 0);
+
+            graph.addNode('test');
+            tap.equal(graph.order, 1);
+        });
+
+        tap.test('size', async() => {
+            const graph = new Graph();
+            tap.equal(graph.size, 0);
+
+            graph._edges.set('test', new Edge());
+            tap.equal(graph.size, 1);
+        });
+
+        tap.test('isEmpty', async() => {
+            tap.test('should return "true" when graph has no node nor edge', async() => {
+                const graph = new Graph();
+                tap.equal(graph.isEmpty(), true);
+            });
+
+            tap.test('should return "false" when graph has at least a node', async() => {
+                const graph = new Graph();
+                graph.addNode('test');
+                tap.equal(graph.isEmpty(), false);
+            });
+
+            tap.test('should return "false" when graph has at least an edge', async() => {
+                const graph = new Graph();
+                graph._edges.set('test', new Edge());
+                tap.equal(graph.isEmpty(), false);
+            });
         });
 
         tap.test('addNode', async() => {
@@ -116,7 +151,7 @@ tap.test('src/graph/Graph.js', async() => {
             tap.test('should add a node to the graph', async() => {
                 const graph = new Graph();
                 const key = graph.addNode('test', { a: 1 });
-                const node = graph.nodes.get(key);
+                const node = graph._nodes.get(key);
 
                 tap.isa(node, Node);
                 tap.match(node.key, 'test');
@@ -142,6 +177,14 @@ tap.test('src/graph/Graph.js', async() => {
                 graph.addNode('test', { a: 1 });
                 tap.equal(graph.hasNode('test'), true);
             });
+        });
+
+        tap.todo('forEachNodes', async() => {
+            // TODO
+        });
+
+        tap.todo('forNode', async() => {
+            // TODO
         });
 
         tap.test('getNodeAttributes', async() => {
@@ -303,7 +346,7 @@ tap.test('src/graph/Graph.js', async() => {
                 graph.addNode('node1');
                 graph.addNode('node2');
                 const key = graph.addEdge('node1', 'node2', { a: 1 });
-                const edge = graph.edges.get(key);
+                const edge = graph._edges.get(key);
 
                 tap.isa(edge, Edge);
                 tap.match(edge.key, 'edgeId(1)');
@@ -332,6 +375,26 @@ tap.test('src/graph/Graph.js', async() => {
                 const key = graph.addEdge('node1', 'node2', { a: 1 });
                 tap.equal(graph.hasEdge(key), true);
             });
+        });
+
+        tap.todo('forEachEdges', async() => {
+            // TODO
+        });
+
+        tap.todo('forEdge', async() => {
+            // TODO
+        });
+
+        tap.todo('forEachEdgesBySource', async() => {
+            // TODO
+        });
+
+        tap.todo('forEachEdgesByDestination', async() => {
+            // TODO
+        });
+
+        tap.todo('forEachEdgesByPath', async() => {
+            // TODO
         });
 
         tap.test('getEdgeAttributes', async() => {
